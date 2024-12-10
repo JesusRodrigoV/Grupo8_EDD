@@ -1,27 +1,33 @@
 package com.farmacia.model;
 
+import java.util.Date;
+
 public class Producto {
     private int id;
     private String nombre;
     private String descripcion;
     private double precio;
     private String codigoBarras;
-    
-    // Constructor modificado para usar el código como base del ID
-    public Producto(String nombre, String descripcion, double precio, String codigoBarras) {
-        this.id = generarId(codigoBarras);  // Generar el id a partir del código
+    private Date fechaVencimiento;
+    private int stock;
+    private String numeroLote;
+
+    public Producto(String nombre, String descripcion, double precio, String codigoBarras,
+                    Date fechaVencimiento, int stock, String numeroLote) {
+        this.id = generarId(codigoBarras);
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.codigoBarras = codigoBarras;
+        this.fechaVencimiento = fechaVencimiento;
+        this.stock = stock;
+        this.numeroLote = numeroLote;
     }
 
-    // Generar un id único, por ejemplo, basado en el código de barras
     private int generarId(String codigoBarras) {
-        return codigoBarras.hashCode();  // Genera un hash del código de barras para obtener un id único
+        return codigoBarras.hashCode();
     }
 
-    // Métodos de acceso
     public int getId() {
         return id;
     }
@@ -42,10 +48,21 @@ public class Producto {
         return codigoBarras;
     }
 
-    // Método para mostrar información del producto
+    public Date getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public String getNumeroLote() {
+        return numeroLote;
+    }
+
     @Override
     public String toString() {
         return "Producto [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio
-                + ", codigoBarras=" + codigoBarras + "]";
+                + ", codigoBarras=" + codigoBarras + ", stock=" + stock + ", numeroLote=" + numeroLote + "]";
     }
 }

@@ -1,13 +1,13 @@
 package com.farmacia.gui;
 
-import com.farmacia.controller.*;
-import com.farmacia.model.*;
+import com.farmacia.controller.ProductoController;
+import com.farmacia.model.Producto;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ProductoGUI extends JFrame {
@@ -15,84 +15,104 @@ public class ProductoGUI extends JFrame {
     private JTextField txtDescripcion;
     private JTextField txtPrecio;
     private JTextField txtStock;
+    private JTextField txtFechaVencimiento;
+    private JTextField txtNumeroLote;
     private JTable table;
     private DefaultTableModel tableModel;
 
-    private ProductoBean productoBean = new ProductoBean();
+    private ProductoController productoController = new ProductoController();
 
     public ProductoGUI() {
         setTitle("Gestión de Productos");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 600, 400);
+        setBounds(100, 100, 800, 500);
         getContentPane().setLayout(null);
 
         JLabel lblNombre = new JLabel("Nombre:");
-        lblNombre.setBounds(10, 10, 80, 25);
+        lblNombre.setBounds(10, 10, 100, 25);
         getContentPane().add(lblNombre);
 
         txtNombre = new JTextField();
-        txtNombre.setBounds(100, 10, 200, 25);
+        txtNombre.setBounds(120, 10, 200, 25);
         getContentPane().add(txtNombre);
 
         JLabel lblDescripcion = new JLabel("Descripción:");
-        lblDescripcion.setBounds(10, 50, 80, 25);
+        lblDescripcion.setBounds(10, 50, 100, 25);
         getContentPane().add(lblDescripcion);
 
         txtDescripcion = new JTextField();
-        txtDescripcion.setBounds(100, 50, 200, 25);
+        txtDescripcion.setBounds(120, 50, 200, 25);
         getContentPane().add(txtDescripcion);
 
         JLabel lblPrecio = new JLabel("Precio:");
-        lblPrecio.setBounds(10, 90, 80, 25);
+        lblPrecio.setBounds(10, 90, 100, 25);
         getContentPane().add(lblPrecio);
 
         txtPrecio = new JTextField();
-        txtPrecio.setBounds(100, 90, 200, 25);
+        txtPrecio.setBounds(120, 90, 200, 25);
         getContentPane().add(txtPrecio);
 
         JLabel lblStock = new JLabel("Stock:");
-        lblStock.setBounds(10, 130, 80, 25);
+        lblStock.setBounds(10, 130, 100, 25);
         getContentPane().add(lblStock);
 
         txtStock = new JTextField();
-        txtStock.setBounds(100, 130, 200, 25);
+        txtStock.setBounds(120, 130, 200, 25);
         getContentPane().add(txtStock);
 
+        JLabel lblFechaVencimiento = new JLabel("Fecha Vencimiento (yyyy-MM-dd):");
+        lblFechaVencimiento.setBounds(10, 170, 200, 25);
+        getContentPane().add(lblFechaVencimiento);
+
+        txtFechaVencimiento = new JTextField();
+        txtFechaVencimiento.setBounds(220, 170, 100, 25);
+        getContentPane().add(txtFechaVencimiento);
+
+        JLabel lblNumeroLote = new JLabel("Número de Lote:");
+        lblNumeroLote.setBounds(10, 210, 100, 25);
+        getContentPane().add(lblNumeroLote);
+
+        txtNumeroLote = new JTextField();
+        txtNumeroLote.setBounds(120, 210, 200, 25);
+        getContentPane().add(txtNumeroLote);
+
         JButton btnRegistrar = new JButton("Registrar Producto");
-        btnRegistrar.setBounds(10, 170, 290, 25);
+        btnRegistrar.setBounds(10, 250, 310, 25);
         getContentPane().add(btnRegistrar);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(10, 210, 560, 140);
+        scrollPane.setBounds(10, 290, 760, 160);
         getContentPane().add(scrollPane);
 
-        tableModel = new DefaultTableModel(new Object[]{"ID", "Nombre", "Descripción", "Precio", "Stock"}, 0);
+        tableModel = new DefaultTableModel(new Object[]{"ID", "Nombre", "Descripción", "Precio", "Stock", "Fecha Venc.", "Lote"}, 0);
         table = new JTable(tableModel);
         scrollPane.setViewportView(table);
 
-        btnRegistrar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                registrarProducto();
-            }
-        });
+        btnRegistrar.addActionListener(e -> registrarProducto());
 
         actualizarTabla();
     }
 
     private void registrarProducto() {
         try {
-            Producto producto = new Producto();
-            producto.setNombre(txtNombre.getText());
-            producto.setDescripcion(txtDescripcion.getText());
-            producto.setPrecio(Double.parseDouble(txtPrecio.getText()));
-            producto.setStock(Integer.parseInt(txtStock.getText()));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaVencimiento = sdf.parse(txtFechaVencimiento.getText().trim());
 
-            productoBean.setProducto(producto);
-            productoBean.registrarProducto();
-            actualizarTabla();
+            Producto producto = new Producto(
+                txtNombre.getText().trim(),
+                txtDescripcion.getText().trim(),
+                Double.parseDouble(txtPrecio.getText().trim()),
+                txtNombre.getText().hashCode() + "", // Generar un código único basado en el nombre
+                fechaVencimiento,
+                Integer.parseInt(txtStock.getText().trim()),
+                txtNumeroLote.getText().trim()
+            );
+
+            productoController.registrarProducto(producto);
+            
 
             JOptionPane.showMessageDialog(this, "Producto registrado correctamente.");
+            actualizarTabla();
             limpiarCampos();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error al registrar el producto: " + ex.getMessage());
@@ -101,14 +121,16 @@ public class ProductoGUI extends JFrame {
 
     private void actualizarTabla() {
         tableModel.setRowCount(0); // Limpiar la tabla
-        List<Producto> productos = productoBean.obtenerProductos();
+        List<Producto> productos = productoController.obtenerProductos();
         for (Producto producto : productos) {
             tableModel.addRow(new Object[]{
                 producto.getId(),
                 producto.getNombre(),
                 producto.getDescripcion(),
                 producto.getPrecio(),
-                producto.getStock()
+                producto.getStock(),
+                producto.getFechaVencimiento(),
+                producto.getNumeroLote()
             });
         }
     }
@@ -118,6 +140,8 @@ public class ProductoGUI extends JFrame {
         txtDescripcion.setText("");
         txtPrecio.setText("");
         txtStock.setText("");
+        txtFechaVencimiento.setText("");
+        txtNumeroLote.setText("");
     }
 
     public static void main(String[] args) {
