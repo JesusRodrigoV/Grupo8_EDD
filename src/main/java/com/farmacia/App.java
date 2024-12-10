@@ -1,7 +1,10 @@
 package com.farmacia;
 
+import com.farmacia.gui.LoginGUI;
+
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        LoginGUI pantallaLogin = new LoginGUI();
+        pantallaLogin.setVisible(true);
     }
 }

@@ -1,26 +1,32 @@
 package com.farmacia.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Rol {
-	private String name;
-	private Set<String> permisos;
-	
-	public Rol(String name) {
-		this.name = name;
-		this.permisos = new HashSet<>();
-	}
-	
-	public String getName() {
-		return name;
-	}
-	public void agregarPermiso(String permission) {
-		permisos.add(permission);
+    private String nombre;
+    private List<String> permisos;
+
+    public Rol(String nombre) {
+        this.nombre = nombre;
+        this.permisos = new ArrayList<>();
     }
 
-	 public boolean conPermiso(String permission) {
-	        return permisos.contains(permission);
-	    }
-	
+    public String getNombre() {
+        return nombre;
+    }
+
+    public List<String> getPermisos() {
+        return permisos;
+    }
+
+    public void agregarPermiso(String permiso) {
+        if (!permisos.contains(permiso)) {
+            permisos.add(permiso);
+        }
+    }
+
+    public boolean tienePermiso(String permiso) {
+        return permisos.contains(permiso);
+    }
 }

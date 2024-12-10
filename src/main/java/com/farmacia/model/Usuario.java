@@ -22,8 +22,15 @@ public class Usuario {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public String getContrasenaHash() {
+
+    public Rol getRole() {
+        return role;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+    public String getContrasenaHash() {
 		return contrasenaHash;
 	}
 
@@ -40,14 +47,6 @@ public class Usuario {
     }
 
     public boolean conPermiso(String permiso) {
-        return role.conPermiso(permiso);
-    }
-
-    public Rol getRole() {
-        return role;
-    }
-
-    public String getUsuario() {
-        return usuario;
+        return role.tienePermiso(permiso);
     }
 }
