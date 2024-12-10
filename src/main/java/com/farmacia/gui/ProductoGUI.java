@@ -120,7 +120,7 @@ public class ProductoGUI extends JFrame {
     }
 
     private void actualizarTabla() {
-        tableModel.setRowCount(0); // Limpiar la tabla
+        tableModel.setRowCount(0); 
         List<Producto> productos = productoController.obtenerProductos();
         for (Producto producto : productos) {
             tableModel.addRow(new Object[]{
