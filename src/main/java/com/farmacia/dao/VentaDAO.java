@@ -10,15 +10,16 @@ import java.sql.SQLException;
 
 public class VentaDAO {
 
-    public boolean registrarVenta(VentaModel venta) {
-        String sql = "INSERT INTO ventas (id_cliente, cantidad, monto, fecha_venta) VALUES (?, ?, ?, ?)";
+	public boolean registrarVenta(VentaModel venta) {
+        String sql = "INSERT INTO ventas (id_cliente, id_producto, cantidad, monto, fecha_venta) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, venta.getIdCliente());
-            stmt.setInt(2, venta.getCantidad());
-            stmt.setDouble(3, venta.getTotal());
-            Date fecha = Date.valueOf(venta.getFecha());  
-            stmt.setDate(4, fecha);
+            stmt.setInt(2, venta.getIdProducto()); 
+            stmt.setInt(3, venta.getCantidad());
+            stmt.setDouble(4, venta.getTotal());
+            Date fecha = Date.valueOf(venta.getFecha());
+            stmt.setDate(5, fecha);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

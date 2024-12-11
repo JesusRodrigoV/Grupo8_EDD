@@ -3,6 +3,7 @@ package com.farmacia.gui;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Color;
 
 import com.farmacia.controller.UsuarioController;
 import com.farmacia.model.Usuario;
@@ -20,6 +21,8 @@ public class LoginGUI extends JFrame {
         setSize(300, 200);
         setLayout(null);
 
+        // Configurar color de fondo del panel
+        getContentPane().setBackground(new Color(18, 200, 204));
 
         JLabel lblUsuario = new JLabel("Usuario:");
         lblUsuario.setBounds(20, 30, 100, 25);
@@ -39,6 +42,8 @@ public class LoginGUI extends JFrame {
 
         btnLogin = new JButton("Iniciar Sesión");
         btnLogin.setBounds(90, 120, 120, 30);
+        btnLogin.setBackground(new Color(102, 91, 196)); // Color de fondo del botón
+        btnLogin.setForeground(Color.WHITE); // Color del texto del botón
         add(btnLogin);
 
         btnLogin.addActionListener(new ActionListener() {

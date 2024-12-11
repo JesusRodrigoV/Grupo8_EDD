@@ -122,15 +122,14 @@ public class VentaGUI extends JFrame {
         double total = producto.getPrecio() * cantidad;
         String fecha = java.time.LocalDate.now().toString();
 
-        // Crear un modelo de venta con los datos necesarios
-        VentaModel venta = new VentaModel(0, cliente.getId_cliente(), cantidad, total, fecha);
+        VentaModel venta = new VentaModel(0, cliente.getId_cliente(), producto.getId(), cantidad, total, fecha);
 
-        // Llamar al controlador para registrar la venta
         if (controller.registrarVenta(venta)) {
             JOptionPane.showMessageDialog(this, "Venta registrada con éxito");
         } else {
             JOptionPane.showMessageDialog(this, "Error al registrar la venta");
         }
     }
+
 
 }

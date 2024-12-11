@@ -13,9 +13,13 @@ public class SistemaAlertas {
     public void agregarAlerta(Producto producto) {
         colaDeAlertas.add(producto);
     }
+    
+    public PriorityQueue<Producto> getColaDeAlertas() {
+		return colaDeAlertas;
+	}
 
-    public void procesarProductos(List<Producto> productos) {
-        colaDeAlertas.clear(); // Limpiar alertas previas
+	public void procesarProductos(List<Producto> productos) {
+        colaDeAlertas.clear(); 
         for (Producto producto : productos) {
             if (producto.getStock() < 10 || producto.getDiasParaVencimiento() <= 30) {
                 colaDeAlertas.add(producto);
