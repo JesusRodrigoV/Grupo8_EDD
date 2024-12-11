@@ -48,7 +48,7 @@ public class ProductoDAO {
                 Producto producto = new Producto(
                     rs.getInt("id_producto"),
                     rs.getString("nombre"),
-                    rs.getString("descripcion"),
+                    rs.getString("descipcion"),
                     rs.getDouble("precio"),
                     rs.getInt("cantidadEnStock"),
                     rs.getString("fecha_produccion"),
@@ -61,4 +61,30 @@ public class ProductoDAO {
         }
         return productos;
     }
+    public List<Producto> buscarProductosPorNombre(String nombre) {
+        List<Producto> productos = new ArrayList<>();
+        String query = "SELECT * FROM producto WHERE nombre LIKE ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, "%" + nombre + "%");
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Producto producto = new Producto(
+                    rs.getInt("id_producto"),
+                    rs.getString("nombre"),
+                    rs.getString("descipcion"),
+                    rs.getDouble("precio"),
+                    rs.getInt("cantidadEnStock"),
+                    rs.getString("fecha_produccion"),
+                    rs.getInt("numeroDeLote")
+                );
+                productos.add(producto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productos;
+    }
+
+
 }
