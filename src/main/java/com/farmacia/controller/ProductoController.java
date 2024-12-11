@@ -1,10 +1,10 @@
 package com.farmacia.controller;
 
+import java.util.List;
+
 import com.farmacia.dao.ProductoDAO;
 import com.farmacia.dao.RegistroProducto;
 import com.farmacia.model.Producto;
-
-import java.util.List;
 
 public class ProductoController {
     private ProductoDAO productoDAO;
@@ -31,6 +31,10 @@ public class ProductoController {
 
     public List<Producto> obtenerProductos() {
         return productoDAO.obtenerProductos();
+    }
+
+    public Producto obtenerProductoPorId(int idProducto) {
+        return productoDAO.obtenerProductoPorId(idProducto); 
     }
 
     public Producto buscarProductoPorCodigoBarras(String codigoBarras) {
