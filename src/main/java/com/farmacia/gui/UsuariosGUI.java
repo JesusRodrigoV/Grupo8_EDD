@@ -32,24 +32,19 @@ public class UsuariosGUI extends JFrame {
         scrollPane.setBounds(20, 40, 550, 200);
         getContentPane().add(scrollPane);
 
-        // Botón para cargar usuarios
-        JButton btnCargar = new JButton("Cargar Usuarios");
-        btnCargar.setBounds(20, 260, 150, 30);
-        getContentPane().add(btnCargar);
-
         // Botón para agregar usuario
         JButton btnAgregar = new JButton("Agregar Usuario");
-        btnAgregar.setBounds(180, 260, 150, 30);
+        btnAgregar.setBounds(20, 260, 150, 30);
         getContentPane().add(btnAgregar);
 
         // Botón para editar usuario
         JButton btnEditar = new JButton("Editar Usuario");
-        btnEditar.setBounds(340, 260, 150, 30);
+        btnEditar.setBounds(180, 260, 150, 30);
         getContentPane().add(btnEditar);
 
         // Botón para eliminar usuario
         JButton btnEliminar = new JButton("Eliminar Usuario");
-        btnEliminar.setBounds(20, 300, 150, 30);
+        btnEliminar.setBounds(340, 260, 150, 30);
         getContentPane().add(btnEliminar);
         
         JButton btnCerrar = new JButton("Cerrar");
@@ -61,18 +56,11 @@ public class UsuariosGUI extends JFrame {
         btnCerrar.setBounds(180, 300, 150, 30);
         getContentPane().add(btnCerrar);
 
-        // Acciones de los botones
-        btnCargar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cargarUsuarios();
-            }
-        });
-
         btnAgregar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 agregarUsuario();
+                cargarUsuarios();
             }
         });
 
@@ -89,6 +77,7 @@ public class UsuariosGUI extends JFrame {
                 eliminarUsuario();
             }
         });
+        cargarUsuarios();
     }
 
     private void cargarUsuarios() {

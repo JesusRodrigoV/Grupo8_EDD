@@ -1,6 +1,6 @@
 package com.farmacia.dao;
 
-import java.util.Date;
+import java.sql.Date; 
 import java.util.HashMap;
 import com.farmacia.model.Producto;
 public class RegistroProducto {
@@ -37,7 +37,7 @@ public class RegistroProducto {
             "Descripción A", 
             10.5, 
             "123456789", 
-            new Date(),
+            new java.sql.Date(System.currentTimeMillis()), 
             50, 
             "Lote001" 
         );

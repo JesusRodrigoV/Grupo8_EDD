@@ -1,14 +1,27 @@
 package com.farmacia.model;
 import java.util.HashMap;
+import java.util.List;
+
+import com.farmacia.controller.ProductoController;
 
 public class GestionInventario {
     private HashMap<Integer, Inventario> inventarios;
+    private ProductoController productoController;
 
     public GestionInventario() {
+    	this.productoController = new ProductoController();
         this.inventarios = new HashMap<>();
+        inicio();
     }
 
-    // Agregar un nuevo inventario al sistema
+    public void inicio() {
+    	List<Producto> productos = productoController.obtenerProductos();
+    	Inventario inventario = null;
+    	for (Producto producto : productos) {
+    		inventario = new Inventario(producto, producto.getStock(), 5, 1000);
+    		inventarios.put(inventario.getProducto().getId(), inventario);
+    	}
+    }
     public void agregarInventario(Inventario inventario) {
         inventarios.put(inventario.getProducto().getId(), inventario);
     }

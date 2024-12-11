@@ -69,7 +69,7 @@ public class LoginGUI extends JFrame {
                 break;
             case "farmacéutico":
             case "cajero":
-                new EmpleadoGUI(user).setVisible(true);
+                new InicioGUI(user).setVisible(true);
                 break;
             default:
                 JOptionPane.showMessageDialog(this, "Rol no reconocido.");

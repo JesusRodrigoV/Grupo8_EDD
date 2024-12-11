@@ -2,6 +2,7 @@ package com.farmacia.dao;
 
 import com.farmacia.model.Rol;
 import com.farmacia.model.Usuario;
+import com.farmacia.model.ClienteModel;
 import com.farmacia.model.ConfRoles;
 import com.farmacia.util.DatabaseConnection;
 
@@ -9,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,5 +113,25 @@ public class UsuarioDAO {
             e.printStackTrace();
         }
     }
-
+    public Usuario obtenerUsuarioPorId(int idUsuario) {
+        String query = "SELECT * FROM usuarios WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+        		PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, idUsuario);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+            	int id = rs.getInt("id");
+                String nombre = rs.getString("usuario");
+                String contra = rs.getString("contrasena_hash");
+            	String rol = rs.getString("rol");
+            	Rol role = new Rol(rol);	
+                return new Usuario(nombre, contra, role);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 }

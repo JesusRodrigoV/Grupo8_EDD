@@ -80,5 +80,50 @@ public class ProductoDAO {
         }
         return null; 
     }
+    public Producto obtenerProductoPorId(int idProducto) {
+        String query = "SELECT * FROM productos WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+        		PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, idProducto);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Producto(
+                    rs.getString("nombre"),
+                    rs.getString("descripcion"),
+                    rs.getDouble("precio"),
+                    rs.getString("codigo_barras"),
+                    rs.getDate("fecha_vencimiento"),
+                    rs.getInt("stock"),
+                    rs.getString("numero_lote")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public List<Producto> listarProductosDisponibles() {
+        List<Producto> productos = new ArrayList<>();
+        String query = "SELECT * FROM producto WHERE stock > 0";
+        try (Connection conn = DatabaseConnection.getConnection();
+        		Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                Producto producto = new Producto(
+                    rs.getString("nombre"),
+                    rs.getString("descripcion"),
+                    rs.getDouble("precio"),
+                    rs.getString("cod_barras"),
+                    rs.getDate("fecha_vencimiento"),
+                    rs.getInt("stock"),
+                    rs.getString("numero_lote")
+                );
+                productos.add(producto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productos;
+    }
 
 }

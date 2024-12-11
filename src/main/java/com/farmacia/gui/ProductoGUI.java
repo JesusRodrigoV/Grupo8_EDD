@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.Date; 
 import java.util.List;
 
 public class ProductoGUI extends JFrame {
@@ -20,9 +20,10 @@ public class ProductoGUI extends JFrame {
     private JTable table;
     private DefaultTableModel tableModel;
 
-    private ProductoController productoController = new ProductoController();
+    private ProductoController productoController;
 
     public ProductoGUI() {
+    	productoController = new ProductoController();
         setTitle("Gestión de Productos");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 800, 500);
@@ -79,6 +80,11 @@ public class ProductoGUI extends JFrame {
         JButton btnRegistrar = new JButton("Registrar Producto");
         btnRegistrar.setBounds(10, 250, 310, 25);
         getContentPane().add(btnRegistrar);
+        
+        JButton btnEnviarAAlertas = new JButton("Enviar a Alertas");
+        btnEnviarAAlertas.setBounds(330, 250, 200, 25);
+        getContentPane().add(btnEnviarAAlertas);
+        btnEnviarAAlertas.addActionListener(e -> enviarProductoAAlertas());
 
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(10, 290, 760, 160);
@@ -90,13 +96,52 @@ public class ProductoGUI extends JFrame {
 
         btnRegistrar.addActionListener(e -> registrarProducto());
 
+        JButton btnAbrirAlertas = new JButton("Abrir Alertas");
+        btnAbrirAlertas.setBounds(550, 250, 200, 25);
+        btnAbrirAlertas.addActionListener(e -> abrirAlertas());
+        getContentPane().add(btnAbrirAlertas);
+
+        
+
+        
         actualizarTabla();
+    }
+    
+    private void abrirAlertas() {
+        AlertasGUI alertasGUI = new AlertasGUI();
+        //alertasGUI.actualizarAlertas(productoController.obtenerProductos());
+        alertasGUI.actualizarAlertas();
+        alertasGUI.setVisible(true);
+    }
+    
+    private void enviarProductoAAlertas() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto de la tabla.");
+            return;
+        }
+
+        int id = (int) tableModel.getValueAt(selectedRow, 0);
+        String nombre = (String) tableModel.getValueAt(selectedRow, 1);
+        String descripcion = (String) tableModel.getValueAt(selectedRow, 2);
+        double precio = (double) tableModel.getValueAt(selectedRow, 3);
+        int stock = (int) tableModel.getValueAt(selectedRow, 4);
+        Date fechaVencimiento = (Date) tableModel.getValueAt(selectedRow, 5);
+        String numeroLote = (String) tableModel.getValueAt(selectedRow, 6);
+
+        Producto producto = new Producto(nombre, descripcion, precio, String.valueOf(id), fechaVencimiento, stock, numeroLote);
+
+        // Crear instancia de AlertasGUI y pasarle el producto
+        AlertasGUI alertasGUI = new AlertasGUI();
+        alertasGUI.recibirProducto(producto);
+        alertasGUI.setVisible(true);
     }
 
     private void registrarProducto() {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date fechaVencimiento = sdf.parse(txtFechaVencimiento.getText().trim());
+            java.util.Date utilDate = sdf.parse(txtFechaVencimiento.getText().trim());
+            java.sql.Date fechaVencimiento = new java.sql.Date(utilDate.getTime());
 
             Producto producto = new Producto(
                 txtNombre.getText().trim(),
