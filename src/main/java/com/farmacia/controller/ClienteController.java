@@ -1,9 +1,9 @@
 package com.farmacia.controller;
 
+import java.util.List;
+
 import com.farmacia.dao.ClienteDAO;
 import com.farmacia.model.ClienteModel;
-
-import java.util.List;
 
 public class ClienteController 
 {
@@ -22,6 +22,11 @@ public class ClienteController
     public List<ClienteModel> obtenerClientes() 
     {
         return clienteDAO.obtenerClientes();
+    }
+    
+    public ClienteModel obtenerClientePorId(int idCliente) 
+    {
+        return clienteDAO.obtenerClientePorId(idCliente);
     }
 
     public ClienteModel buscarClientePorId(int idCliente) 
