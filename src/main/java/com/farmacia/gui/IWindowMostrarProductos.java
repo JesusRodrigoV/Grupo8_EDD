@@ -2,27 +2,27 @@ package com.farmacia.gui;
 
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.SystemColor;
-import java.util.List;
-
-import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-
 import com.farmacia.dao.ProductoDAO;
 import com.farmacia.model.Producto;
 
-public class IWindowMostrarProductos extends JFrame {
+public class IWindowAgregarProducto extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
+    private JTextField txtNombre;
+    private JTextField txtDescripcion;
+    private JTextField txtPrecio;
+    private JTextField txtCantidadEnStock;
+    private JTextField txtFechaDeVencimiento;
+    private JTextField txtNumeroDeLote;
 
     /**
      * Launch the application.
@@ -31,7 +31,7 @@ public class IWindowMostrarProductos extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    IWindowMostrarProductos frame = new IWindowMostrarProductos();
+                    IWindowAgregarProducto frame = new IWindowAgregarProducto();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -43,71 +43,110 @@ public class IWindowMostrarProductos extends JFrame {
     /**
      * Create the frame.
      */
-    public IWindowMostrarProductos() {
-        setResizable(false);
-        setTitle("Productos Lista");
+    public IWindowAgregarProducto() {
+        setTitle("Agregar Producto");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 1000, 300);
+        setBounds(100, 100, 450, 400);
         contentPane = new JPanel();
         contentPane.setBackground(SystemColor.activeCaption);
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JLabel LabelProductosLista = new JLabel("PRODUCTOS LISTA");
-        LabelProductosLista.setForeground(SystemColor.info);
-        LabelProductosLista.setBounds(356, 5, 272, 24);
-        LabelProductosLista.setFont(new Font("Bodoni MT Black", Font.BOLD, 20));
-        LabelProductosLista.setHorizontalAlignment(SwingConstants.CENTER);
-        contentPane.add(LabelProductosLista);
+        JLabel lblTitulo = new JLabel("AGREGAR PRODUCTO");
+        lblTitulo.setForeground(SystemColor.info);
+        lblTitulo.setFont(new Font("Bodoni MT Black", Font.BOLD, 20));
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTitulo.setBounds(90, 10, 250, 30);
+        contentPane.add(lblTitulo);
 
-        JPanel panel = new JPanel();
-        panel.setBounds(10, 34, 964, 222);
-        panel.setBackground(SystemColor.inactiveCaption);
-        contentPane.add(panel);
-        panel.setLayout(null);
+        JLabel lblNombre = new JLabel("Nombre:");
+        lblNombre.setBounds(30, 60, 100, 25);
+        contentPane.add(lblNombre);
 
-        ImageIcon fondoAmarillo = new ImageIcon("FondoAmarillo.jpg");
+        txtNombre = new JTextField();
+        txtNombre.setBounds(150, 60, 200, 25);
+        contentPane.add(txtNombre);
+        txtNombre.setColumns(10);
 
-        DefaultTableModel model = new DefaultTableModel();
-        JTable table = new JTable(model);
-        model.addColumn("Producto ID");
-        model.addColumn("Nombre");
-        model.addColumn("Descipción");
-        model.addColumn("Precio");
-        model.addColumn("Cantidad En Stock");
-        model.addColumn("Fecha De Vencimiento");
-        model.addColumn("Número De Lote");
+        JLabel lblDescripcion = new JLabel("Descripción:");
+        lblDescripcion.setBounds(30, 100, 100, 25);
+        contentPane.add(lblDescripcion);
 
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(10, 9, 944, 202);
-        panel.add(scrollPane);
+        txtDescripcion = new JTextField();
+        txtDescripcion.setBounds(150, 100, 200, 25);
+        contentPane.add(txtDescripcion);
+        txtDescripcion.setColumns(10);
 
-        JLabel LabelImagen1 = new JLabel("");
-        LabelImagen1.setBounds(0, 0, 964, 222);
-        panel.add(LabelImagen1);
-        LabelImagen1.setIcon(new ImageIcon(fondoAmarillo.getImage().getScaledInstance(970, 225, Image.SCALE_SMOOTH)));
+        JLabel lblPrecio = new JLabel("Precio:");
+        lblPrecio.setBounds(30, 140, 100, 25);
+        contentPane.add(lblPrecio);
 
-        JLabel LabelImagen2 = new JLabel("");
-        ImageIcon fondo = new ImageIcon("Fondo.png");
-        LabelImagen2.setIcon(new ImageIcon(fondo.getImage().getScaledInstance(990, 280, Image.SCALE_SMOOTH)));
-        LabelImagen2.setBounds(0, 0, 984, 274);
-        contentPane.add(LabelImagen2);
+        txtPrecio = new JTextField();
+        txtPrecio.setBounds(150, 140, 200, 25);
+        contentPane.add(txtPrecio);
+        txtPrecio.setColumns(10);
+
+        JLabel lblCantidadEnStock = new JLabel("Cantidad en Stock:");
+        lblCantidadEnStock.setBounds(30, 180, 120, 25);
+        contentPane.add(lblCantidadEnStock);
+
+        txtCantidadEnStock = new JTextField();
+        txtCantidadEnStock.setBounds(150, 180, 200, 25);
+        contentPane.add(txtCantidadEnStock);
+        txtCantidadEnStock.setColumns(10);
+
+        JLabel lblFechaDeVencimiento = new JLabel("Fecha de Vencimiento:");
+        lblFechaDeVencimiento.setBounds(30, 220, 150, 25);
+        contentPane.add(lblFechaDeVencimiento);
+
+        txtFechaDeVencimiento = new JTextField();
+        txtFechaDeVencimiento.setBounds(180, 220, 170, 25);
+        contentPane.add(txtFechaDeVencimiento);
+        txtFechaDeVencimiento.setColumns(10);
+
+        JLabel lblNumeroDeLote = new JLabel("Número de Lote:");
+        lblNumeroDeLote.setBounds(30, 260, 120, 25);
+        contentPane.add(lblNumeroDeLote);
+
+        txtNumeroDeLote = new JTextField();
+        txtNumeroDeLote.setBounds(150, 260, 200, 25);
+        contentPane.add(txtNumeroDeLote);
+        txtNumeroDeLote.setColumns(10);
+
+        JButton btnRegistrar = new JButton("Registrar Producto");
+        btnRegistrar.setBounds(150, 300, 200, 30);
+        contentPane.add(btnRegistrar);
+
+ 
+        btnRegistrar.addActionListener(e -> {
+            try {
+                String nombre = txtNombre.getText();
+                String descripcion = txtDescripcion.getText();
+                double precio = Double.parseDouble(txtPrecio.getText());
+                int cantidadEnStock = Integer.parseInt(txtCantidadEnStock.getText());
+                String fechaDeVencimiento = txtFechaDeVencimiento.getText();
+                int numeroDeLote = Integer.parseInt(txtNumeroDeLote.getText()); 
+
+                Producto producto = new Producto(nombre, descripcion, precio, cantidadEnStock, fechaDeVencimiento, numeroDeLote);
+                ProductoDAO productoDAO = new ProductoDAO();
+                productoDAO.registrarProducto(producto);
 
 
-        ProductoDAO productoDAO = new ProductoDAO();
-        List<Producto> productos = productoDAO.obtenerProductos();
-        for (Producto producto : productos) {
-            model.addRow(new Object[]{
-                producto.getId(),
-                producto.getNombre(),
-                producto.getDescripcion(),
-                producto.getPrecio(),
-                producto.getCantidadEnStock(),
-                producto.getFechaDeVencimiento(),
-                producto.getNumeroDeLote()
-            });
-        }
+                JLabel lblConfirmacion = new JLabel("Producto registrado exitosamente.");
+                lblConfirmacion.setBounds(150, 340, 200, 25);
+                contentPane.add(lblConfirmacion);
+            } catch (NumberFormatException ex) {
+                JLabel lblError = new JLabel("Error en el formato de número. Por favor, revise los datos.");
+                lblError.setBounds(150, 340, 250, 25);
+                contentPane.add(lblError);
+                ex.printStackTrace();
+            } catch (Exception ex) {
+                JLabel lblError = new JLabel("Error al registrar el producto. Por favor, revise los datos.");
+                lblError.setBounds(150, 340, 250, 25);
+                contentPane.add(lblError);
+                ex.printStackTrace();
+            }
+        });
     }
 }
