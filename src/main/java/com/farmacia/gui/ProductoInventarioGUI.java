@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ProductoInventarioGUI extends JFrame {
     private JPanel contentPane;
-    private JTextField txtNombre, txtDescripcion, txtPrecio, txtCodigo, txtStock, txtMin, txtMax, txtActualizarId, txtActualizarCantidad;
+    private JTextField txtNombre, txtDescripcion, txtPrecio, txtCodigo, txtStock, txtMin, txtMax;
     private JTextField txtFechaVenc, txtLote;
     private JTable tableInventario;
     private DefaultTableModel modeloTabla;
@@ -29,7 +29,7 @@ public class ProductoInventarioGUI extends JFrame {
         productoController = new ProductoController();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 875, 617);
+        setBounds(100, 100, 959, 564);
         contentPane = new JPanel();
         contentPane.setBackground(new Color(18, 200, 204));
         setContentPane(contentPane);
@@ -120,6 +120,7 @@ public class ProductoInventarioGUI extends JFrame {
         JButton btnRegistrar = new JButton("Registrar Producto");
         btnRegistrar.setFont(new Font("Times New Roman", Font.BOLD, 14));
         btnRegistrar.setBackground(new Color(102, 91, 196));
+        btnRegistrar.setForeground(Color.WHITE);
         btnRegistrar.setBounds(50, 451, 200, 25);
         contentPane.add(btnRegistrar);
 
@@ -130,39 +131,8 @@ public class ProductoInventarioGUI extends JFrame {
        	tableInventario = new JTable(modeloTabla);
        	tableInventario.setBackground(new Color(186, 255, 41));
         JScrollPane scrollPane = new JScrollPane(tableInventario);
-        scrollPane.setBounds(291, 76, 542, 400);
+        scrollPane.setBounds(291, 76, 631, 435);
         contentPane.add(scrollPane);
-
-        // Botones de acciones
-        JLabel lblActualizarId = new JLabel("Código Producto:");
-        lblActualizarId.setFont(new Font("Times New Roman", Font.BOLD, 13));
-        lblActualizarId.setBounds(10, 506, 100, 25);
-        contentPane.add(lblActualizarId);
-
-        txtActualizarId = new JTextField();
-        txtActualizarId.setBounds(120, 506, 150, 25);
-        contentPane.add(txtActualizarId);
-
-        JLabel lblCantidad = new JLabel("Cantidad:");
-        lblCantidad.setFont(new Font("Times New Roman", Font.BOLD, 14));
-        lblCantidad.setBounds(10, 543, 100, 25);
-        contentPane.add(lblCantidad);
-
-        txtActualizarCantidad = new JTextField();
-        txtActualizarCantidad.setBounds(120, 543, 150, 25);
-        contentPane.add(txtActualizarCantidad);
-
-        JButton btnActualizar = new JButton("Actualizar Stock");
-        btnActualizar.setFont(new Font("Times New Roman", Font.BOLD, 14));
-        btnActualizar.setBackground(new Color(102, 91, 196));
-        btnActualizar.setBounds(312, 505, 200, 25);
-        contentPane.add(btnActualizar);
-
-        JButton btnVerificar = new JButton("Verificar Stock");
-        btnVerificar.setFont(new Font("Times New Roman", Font.BOLD, 14));
-        btnVerificar.setBackground(new Color(102, 91, 196));
-        btnVerificar.setBounds(546, 505, 200, 25);
-        contentPane.add(btnVerificar);
         
         JLabel lbltitulo = new JLabel("GESTIÓN DE PRODUCTOS");
         lbltitulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -173,6 +143,7 @@ public class ProductoInventarioGUI extends JFrame {
         
         JButton btnVolver = new JButton("Volver al Menú");
         btnVolver.setFont(new Font("Times New Roman", Font.BOLD, 14));
+        btnVolver.setForeground(Color.WHITE);
         btnVolver.setBackground(new Color(102, 91, 196));
         btnVolver.setBounds(10, 16, 150, 25);
         contentPane.add(btnVolver);
@@ -181,41 +152,12 @@ public class ProductoInventarioGUI extends JFrame {
             dispose();
         });
 
-     // Botones de acciones
-        JButton btnEnviarAAlertas = new JButton("Enviar a Alertas");
-        btnEnviarAAlertas.setFont(new Font("Times New Roman", Font.BOLD, 14));
-        btnEnviarAAlertas.setBackground(new Color(102, 91, 196));
-        btnEnviarAAlertas.setBounds(312, 543, 200, 25);
-        contentPane.add(btnEnviarAAlertas);
-
         JButton btnAbrirAlertas = new JButton("Abrir Alertas");
         btnAbrirAlertas.setFont(new Font("Times New Roman", Font.BOLD, 14));
+        btnAbrirAlertas.setForeground(Color.WHITE);
         btnAbrirAlertas.setBackground(new Color(102, 91, 196));
-        btnAbrirAlertas.setBounds(546, 543, 200, 25);
+        btnAbrirAlertas.setBounds(50, 486, 200, 25);
         contentPane.add(btnAbrirAlertas);
-
-        // Acción para enviar a alertas
-        btnEnviarAAlertas.addActionListener(e -> {
-            int selectedRow = tableInventario.getSelectedRow();
-            if (selectedRow == -1) {
-                JOptionPane.showMessageDialog(this, "Por favor, seleccione un producto de la tabla.");
-                return;
-            }
-
-            String codigo = (String) modeloTabla.getValueAt(selectedRow, 0);
-            String nombre = (String) modeloTabla.getValueAt(selectedRow, 1);
-            String descripcion = (String) modeloTabla.getValueAt(selectedRow, 2);
-            int stock = (int) modeloTabla.getValueAt(selectedRow, 3);
-            int minimo = (int) modeloTabla.getValueAt(selectedRow, 4);
-            int maximo = (int) modeloTabla.getValueAt(selectedRow, 5);
-
-            Producto producto = new Producto(nombre, descripcion, 0, codigo, null, stock, null);
-
-            // Crear instancia de AlertasGUI y pasarle el producto
-            AlertasGUI alertasGUI = new AlertasGUI();
-            alertasGUI.recibirProducto(producto);
-            alertasGUI.setVisible(true);
-        });
 
         // Acción para abrir alertas
         btnAbrirAlertas.addActionListener(e -> {
@@ -260,51 +202,6 @@ public class ProductoInventarioGUI extends JFrame {
                 limpiarCamposRegistro();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Error al registrar el producto: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-
-        // Acción para actualizar stock
-        btnActualizar.addActionListener(e -> {
-            String codigoStr = txtActualizarId.getText().trim();
-            if (codigoStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Por favor, ingrese un código válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            int cantidad;
-            try {
-                cantidad = Integer.parseInt(txtActualizarCantidad.getText());
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido para la cantidad.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            Inventario inventario = gestionInventario.getInventarios().get(codigoStr);
-            if (inventario != null) {
-                int nuevoStock = inventario.getStockActual() + cantidad;
-                inventario.setStockActual(nuevoStock);
-                String mensajeEstado = generarMensajeEstadoStock(inventario);
-                JOptionPane.showMessageDialog(this, mensajeEstado, "Estado del Stock", JOptionPane.INFORMATION_MESSAGE);
-                actualizarTabla();
-            } else {
-                JOptionPane.showMessageDialog(this, "Error: Producto no encontrado en el inventario.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-
-        // Acción para verificar stock
-        btnVerificar.addActionListener(e -> {
-            String codigo = txtActualizarId.getText().trim();
-            if (codigo.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Por favor, ingrese un código válido.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            Inventario inventario = gestionInventario.getInventarios().get(codigo);
-            if (inventario != null) {
-                String mensaje = generarMensajeEstadoStock(inventario);
-                JOptionPane.showMessageDialog(this, mensaje, "Verificación de Stock", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "Error: Producto no encontrado en el inventario.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
