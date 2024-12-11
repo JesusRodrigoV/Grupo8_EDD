@@ -1,25 +1,29 @@
 package com.farmacia.dao;
 
-import com.farmacia.model.ClienteModel;
-import com.farmacia.util.DatabaseConnection;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.farmacia.model.ClienteModel;
+import com.farmacia.util.DatabaseConnection;
 
 public class ClienteDAO 
 {
 
-    private static final String INSERT_CLIENTE = "INSERT INTO CLIENTES (id_cliente, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
+    private static final String INSERT_CLIENTE = "INSERT INTO CLIENTES (ci, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
     private static final String SELECT_ALL_CLIENTES = "SELECT * FROM CLIENTES";
     private static final String SELECT_CLIENTE_BY_ID = "SELECT * FROM CLIENTES WHERE id_cliente = ?";
 
     public void registrarCliente(ClienteModel cliente) 
     {
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement ps = connection.prepareStatement(INSERT_CLIENTE)) {
+             PreparedStatement ps = connection.prepareStatement(INSERT_CLIENTE)) 
+        {
 
-            ps.setInt(1, cliente.getId_cliente());
+            ps.setString(1, cliente.getCi());
             ps.setString(2, cliente.getNombre());
             ps.setString(3, cliente.getApellidos());
             ps.setString(4, cliente.getTelefono());
@@ -41,6 +45,7 @@ public class ClienteDAO
             {
                 ClienteModel cliente = new ClienteModel(
                         rs.getInt("id_cliente"),
+                        rs.getString("ci"),
                         rs.getString("nombre"),
                         rs.getString("apellidos"),
                         rs.getString("telefono")
@@ -65,6 +70,7 @@ public class ClienteDAO
                 {
                     return new ClienteModel(
                         rs.getInt("id_cliente"),
+                        rs.getString("ci"),
                         rs.getString("nombre"),
                         rs.getString("apellidos"),
                         rs.getString("telefono")
@@ -75,23 +81,5 @@ public class ClienteDAO
             e.printStackTrace();
         }
         return null;
-    }
-    public List<ClienteModel> listarClientes() {
-        List<ClienteModel> clientes = new ArrayList<>();
-        String sql = "SELECT * FROM clientes";
-        try (Connection conn = DatabaseConnection.getConnection();
-        		Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
-                clientes.add(new ClienteModel(
-                    rs.getInt("id_cliente"),
-                    rs.getString("nombre"),
-                    rs.getString("apellidos"),
-                    rs.getString("telefono")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return clientes;
     }
 }

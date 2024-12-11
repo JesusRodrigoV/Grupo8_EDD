@@ -10,10 +10,12 @@ CREATE TABLE ALERTAS (
 
 -- Table: CLIENTES
 CREATE TABLE CLIENTES (
-    id_cliente SERIAL PRIMARY KEY,  -- SERIAL para auto-incrementar el id
-    nombre VARCHAR(25) NOT NULL,
-    apellidos VARCHAR(25) NOT NULL,
-    telefono VARCHAR(15) NOT NULL
+    id_cliente serial  NOT NULL,
+	ci varchar(20) not null,
+    nombre varchar(25)  NOT NULL,
+    apellidos varchar(25)  NOT NULL,
+    telefono varchar(15)  NOT NULL,
+    CONSTRAINT CLIENTES_pk PRIMARY KEY (id_cliente)
 );
 
 -- Table: DETALLE_VENTAS
@@ -50,17 +52,31 @@ CREATE TABLE PRODUCTO (
 
 -- Table: PROVEEDORES
 CREATE TABLE PROVEEDORES (
-    id_proveedor SERIAL PRIMARY KEY,  -- SERIAL para auto-incrementar el id
+    id_proveedor SERIAL PRIMARY KEY,
     nombre VARCHAR(30) NOT NULL
 );
 
+-- Table: MEDIDAS
+CREATE TABLE MEDIDAS (
+	id_medida serial primary key,
+	medida varchar(10)
+);
+
+-- Table: INDICACIONES
+CREATE TABLE INDICACIONES (
+	id_indicacion serial primary key,
+	indicacion varchar(100)
+);
+
 -- Table: RECETAS
-CREATE TABLE RECETAS (
-    id_receta SERIAL PRIMARY KEY,  -- SERIAL para auto-incrementar el id
-    id_cliente INT NOT NULL,
-    fecha DATE NOT NULL,
-    detalle VARCHAR(50) NOT NULL,
-    CONSTRAINT RECETAS_fk_cliente FOREIGN KEY (id_cliente) REFERENCES CLIENTES (id_cliente) ON DELETE NO ACTION
+create table RECETAS (
+	id_receta serial primary key,
+	id_cliente int references CLIENTES(id_cliente),
+	id_producto int references PRODUCTO(id_producto),
+	id_indicacion int references INDICACIONES(id_indicacion),
+	id_medida int references MEDIDAS(id_medida),
+	fecha_emision date,
+	cantidad decimal(10,2)
 );
 
 -- Table: SUCURSAL
